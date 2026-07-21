@@ -35,16 +35,7 @@ const emotionEmoji = {
   disgusted: "🤢",
 };
 
-const emotionGradient = {
-  happy: "linear-gradient(135deg,#facc15,#f472b6)",
-  surprised: "linear-gradient(135deg,#38bdf8,#818cf8)",
-  neutral: "linear-gradient(135deg,#94a3b8,#6366f1)",
-  sad: "linear-gradient(135deg,#6366f1,#1e293b)",
-  angry: "linear-gradient(135deg,#ef4444,#f97316)",
-  fearful: "linear-gradient(135deg,#7c3aed,#1e1b4b)",
-  disgusted: "linear-gradient(135deg,#16a34a,#14532d)",
-  default: "linear-gradient(135deg,#6366f1,#a855f7)",
-};
+
 
 /* ===================== COMPONENT ===================== */
 

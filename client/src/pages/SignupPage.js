@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../services/firebaseConfig";
-import { FaUserAlt, FaLock, FaEnvelope } from "react-icons/fa";
+import { FaLock, FaEnvelope } from "react-icons/fa";
 import { GiBrain } from "react-icons/gi";
 
 const SignupPage = () => {

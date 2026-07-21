@@ -46,7 +46,7 @@ const ProfilePage = () => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [streak, setStreak] = useState(0);
+  const [streak] = useState(0);
   const [badges, setBadges] = useState([]);
   const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
   const [filePreview, setFilePreview] = useState(null);
@@ -54,8 +54,6 @@ const ProfilePage = () => {
   const [uploadProgress, setUploadProgress] = useState(null);
   const [savedAt, setSavedAt] = useState(null);
   const [daysLogged, setDaysLogged] = useState(0);
-  const [totalEntries, setTotalEntries] = useState(0);
-const [positiveDays, setPositiveDays] = useState(0);
   // Load user data from Firestore on mount
   useEffect(() => {
   let mounted = true;
