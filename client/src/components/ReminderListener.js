@@ -72,6 +72,7 @@ export default function ReminderListener() {
 
     return () => clearInterval(interval);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastTriggered]);
 
   return (

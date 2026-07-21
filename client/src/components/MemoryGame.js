@@ -16,6 +16,7 @@ function MemoryGame() {
     if (sequence.length > 0) {
       playSequence();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sequence]);
 
   // -------------------------

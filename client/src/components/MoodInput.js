@@ -36,16 +36,6 @@ const suggestions = {
   Excited: "Amazing energy! Channel it into something creative 🚀",
 };
 
-const moodGradients = {
-  Happy: "linear-gradient(135deg,#fde047,#f472b6)",
-  Sad: "linear-gradient(135deg,#60a5fa,#1e3a8a)",
-  Angry: "linear-gradient(135deg,#ef4444,#f97316)",
-  Stressed: "linear-gradient(135deg,#fb923c,#7c2d12)",
-  Relaxed: "linear-gradient(135deg,#34d399,#059669)",
-  Excited: "linear-gradient(135deg,#c084fc,#6366f1)",
-  default: "linear-gradient(135deg,#6366f1,#a855f7)",
-};
-
 const MoodInput = () => {
   const [user, setUser] = useState(null);
   const [selectedMood, setSelectedMood] = useState(null);

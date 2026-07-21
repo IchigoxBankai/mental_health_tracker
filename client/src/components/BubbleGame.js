@@ -78,7 +78,7 @@ function BubbleGame({ onScore }) {
       }, 6000);
     }, difficultySettings[difficulty]);
 
-    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty, gameStarted, gameActive]);
 
   /* ================= SAVE HIGH SCORE ================= */
