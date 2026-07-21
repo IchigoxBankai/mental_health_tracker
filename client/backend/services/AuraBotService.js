@@ -70,7 +70,7 @@ Generate a natural reply.`;
 
     // Call the Google Gemini API with gemini-flash-latest model
     const response = await ai.models.generateContent({
-      model: "gemini-flash-latest",
+      model: "gemini-2.0-flash",
       contents: prompt,
       config: {
         systemInstruction: systemPrompt,
@@ -80,7 +80,12 @@ Generate a natural reply.`;
     const replyText = response.text || "";
     return replyText.trim();
   } catch (error) {
-    console.error("Error in AuraBotService.generateReply (Gemini):", error.message || error);
-    throw error;
+  console.error("Error in AuraBotService.generateReply:", error);
+
+  if (error?.status === 503 || error?.message?.includes("UNAVAILABLE")) {
+    return "I'm experiencing high demand from the AI service right now. Please try again in a minute.";
   }
+
+  return "Sorry, something went wrong while generating a response. Please try again later.";
+}
 }
