@@ -143,11 +143,6 @@ if (total >= 50) earnedBadges.push("🧠 Reflection Pro");
 if (total >= 100) earnedBadges.push("🏆 Aura Master");
 
 setBadges(earnedBadges);
-      // ---------------------------
-      // Set All States
-      // ---------------------------
-      setTotalEntries(total);
-      setPositiveDays(positive);
       setDaysLogged(daysLogged);
       setBadges(earnedBadges);
       
