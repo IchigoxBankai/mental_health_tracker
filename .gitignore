@@ -1,0 +1,12 @@
+# Node / React
+node_modules/
+build/
+dist/
+.env
+.vscode/
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

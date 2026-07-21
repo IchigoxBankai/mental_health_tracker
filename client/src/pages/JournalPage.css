@@ -1,0 +1,222 @@
+/* ===== JOURNAL PAGE STYLING ===== */
+
+.journal-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== CREATE ENTRY BOX ===== */
+.journal-create-box {
+  background: var(--card-bg);
+  border: var(--card-border);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 35px;
+  transition: all 0.3s ease;
+}
+
+.journal-create-box h3 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* ===== FORM CONTROLS ===== */
+.journal-create-box input,
+.journal-create-box select,
+.journal-create-box textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--input-bg);
+  border: var(--input-border);
+  color: var(--text-color);
+  font-size: 15px;
+  margin-bottom: 16px;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.journal-create-box textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.journal-create-box input:focus,
+.journal-create-box select:focus,
+.journal-create-box textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(165, 94, 234, 0.2);
+}
+
+/* ===== SAVE BUTTON ===== */
+.journal-create-box button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(165, 94, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.journal-create-box button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(165, 94, 234, 0.5);
+  opacity: 0.95;
+}
+
+/* ===== FILTER ROW ===== */
+.journal-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.journal-filters input,
+.journal-filters select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: var(--card-border);
+  color: var(--text-color);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.journal-filters input {
+  flex: 1;
+}
+
+.journal-filters input:focus,
+.journal-filters select:focus {
+  border-color: var(--accent);
+}
+
+/* ===== ENTRIES GRID ===== */
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* ===== ENTRY CARD ===== */
+.journal-card {
+  background: var(--card-bg);
+  border: var(--card-border);
+  padding: 24px;
+  border-radius: 20px;
+  color: var(--text-color);
+  box-shadow: var(--card-shadow);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.journal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--card-glow), var(--card-shadow);
+}
+
+.journal-card h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.journal-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  opacity: 0.9;
+  flex-grow: 1;
+}
+
+/* ===== MOOD BASED CARD GLOW/ACCENTS ===== */
+.mood-happy {
+  border-left: 5px solid #00d2d3;
+}
+
+.mood-sad {
+  border-left: 5px solid #54a0ff;
+}
+
+.mood-angry {
+  border-left: 5px solid #ff7675;
+}
+
+.mood-anxious {
+  border-left: 5px solid #fdcb6e;
+}
+
+.mood-calm {
+  border-left: 5px solid #1dd1a1;
+}
+
+.word-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.entry-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.journal-insight {
+  background: rgba(165, 94, 234, 0.12);
+  border: 1px dashed var(--accent);
+  padding: 16px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* ===== SENTIMENT BADGES ===== */
+.sentiment-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-top: 15px;
+  display: inline-block;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sentiment-badge.Positive {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.sentiment-badge.Negative {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.sentiment-badge.Neutral {
+  background: rgba(149, 165, 166, 0.15);
+  color: #95a5a6;
+  border: 1px solid rgba(149, 165, 166, 0.3);
+}

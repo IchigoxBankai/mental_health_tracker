@@ -1,0 +1,109 @@
+.timer-container {
+  text-align: center;
+  padding: 30px;
+  background: var(--card-bg);
+  border: var(--card-border);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  max-width: 500px;
+  margin: 0 auto;
+  color: var(--text-color);
+}
+
+.timer-container h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.timer-container p {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+/* Focus Circle */
+.focus-circle {
+  width: 180px;
+  height: 180px;
+  margin: 25px auto;
+  border-radius: 50%;
+  border: 6px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 20px rgba(165, 94, 234, 0.2);
+}
+
+.focus-circle.active {
+  animation: timerBreathe 4s infinite ease-in-out;
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.4);
+}
+
+@keyframes timerBreathe {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(0.9); }
+}
+
+/* Buttons */
+.timer-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 15px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.timer-btn:hover {
+  transform: translateY(-2px);
+}
+
+.timer-btn.start {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.timer-btn.start:hover {
+  box-shadow: 0 6px 18px rgba(46, 204, 113, 0.5);
+}
+
+.timer-btn.stop {
+  background: linear-gradient(135deg, #ff4d4d 0%, #ff3333 100%);
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+}
+
+.timer-btn.stop:hover {
+  box-shadow: 0 6px 18px rgba(255, 77, 77, 0.5);
+}
+
+/* Result */
+.result-box {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.result-box.win {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.result-box.lose {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}

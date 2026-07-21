@@ -1,0 +1,72 @@
+/* ===== CONTAINER ===== */
+.splash-container {
+  width: 100vw;
+  height: 100vh;
+  background: #28123c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== FLOATING SPHERES ===== */
+.splash-sphere {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #d6b0ff, #9f54ff);
+  opacity: 0.65;
+}
+
+/* ===== CONTENT ===== */
+.splash-content {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== LOGO ===== */
+.splash-logo {
+  width: 140px;
+  height: auto;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 10px;
+}
+
+/* ===== ROTATING RING ===== */
+.logo-ring {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: -38px;
+  border: 3.5px solid rgba(179, 23, 226, 0.45);
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(90, 2, 107, 0.4);
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px rgba(182, 79, 230, 0.6));
+}
+
+/* ===== APP TITLE ===== */
+.splash-title {
+  margin-top: 40px;
+  margin-bottom: 12px; /* space before slogan */
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  /* Gradient text */
+  background: linear-gradient(90deg, #dab4e9, #b5d2ec);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== TAGLINE ===== */
+.splash-tagline {
+  font-size: 16px;
+  letter-spacing: 0.6px;
+  color: rgba(237, 232, 238, 0.85);
+}

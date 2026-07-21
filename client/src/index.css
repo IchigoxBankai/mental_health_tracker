@@ -1,0 +1,24 @@
+/* src/index.css */
+
+/* Import Outfit Font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* Apply variables globally */
+body {
+  margin: 0;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Handwriting font for journaling features */
+.journal-handwriting {
+  font-family: "Caveat", cursive;
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+/* Global Transition Rules for smooth theme shifts */
+* {
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}

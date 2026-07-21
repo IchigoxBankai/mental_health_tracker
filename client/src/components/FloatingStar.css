@@ -1,0 +1,26 @@
+.floating-star {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  font-size: 55px;
+  animation: wobbleBounce 2.2s infinite ease-in-out;
+  z-index: 2000;
+}
+
+@keyframes wobbleBounce {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-25px) rotate(-10deg);
+  }
+  50% {
+    transform: translateY(-45px) rotate(10deg);
+  }
+  75% {
+    transform: translateY(-25px) rotate(-8deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
