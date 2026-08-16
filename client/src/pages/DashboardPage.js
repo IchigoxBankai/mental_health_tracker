@@ -178,7 +178,7 @@ const DashboardPage = () => {
             animate={{ opacity: 1, y: 0 }}
           >
             {/* HEADER */}
-            <div className="dashboard-header">
+            <div className="dashboard-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
               <div className="welcome-container">
                 <img
                   src={dbPhotoURL || user?.photoURL || "https://i.imgur.com/HeIi0wU.png"}
@@ -193,24 +193,22 @@ const DashboardPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
 
-            {/* DOWNLOAD REPORT BUTTON */}
-           <div className="dashboard-top-bar">
-  <button
-    className="report-btn"
-    onClick={() =>
-      generateMentalHealthReport({
-        user,
-        moods,
-        streak: calculateStreak(),
-        badges: calculateBadges(),
-      })
-    }
-  >
-    📄 Generate Full Report
-  </button>
-</div>
+              <button
+                className="report-btn"
+                onClick={() =>
+                  generateMentalHealthReport({
+                    user,
+                    moods,
+                    streak: calculateStreak(),
+                    badges: calculateBadges(),
+                  })
+                }
+                style={{ margin: 0 }}
+              >
+                📄 Generate Full Report
+              </button>
+            </div>
 
             {/* TODAY MOOD */}
             <div className="dashboard-cards">
