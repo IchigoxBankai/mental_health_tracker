@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as faceapi from "face-api.js";
+import * as faceapi from "@vladmandic/face-api";
 import { db, auth } from "./firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import * as faceapi from "face-api.js";
 import { auth, db } from "../services/firebaseConfig";
 import {
   addDoc,
