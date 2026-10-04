@@ -1,4 +1,4 @@
-.streak-card {
+.mental-score-card {
   background: var(--card-bg);
   border: var(--card-border);
   backdrop-filter: blur(12px);
@@ -14,19 +14,19 @@
   overflow: hidden;
 }
 
-.streak-card:hover {
+.mental-score-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--card-glow), var(--card-shadow);
 }
 
-.streak-header {
+.score-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 6px;
 }
 
-.streak-header h3 {
+.score-header h3 {
   font-size: 15px;
   font-weight: 600;
   color: var(--text-muted);
@@ -36,32 +36,46 @@
   margin: 0;
 }
 
-.streak-number {
-  font-size: 32px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 6px 0 8px;
-  line-height: 1.1;
-}
-
-.streak-badge {
+.score-badge {
   display: inline-block;
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  background: rgba(255, 159, 67, 0.15);
-  color: #ff9f43;
-  border: 1px solid rgba(255, 159, 67, 0.3);
-  width: fit-content;
+  border: 1px solid;
 }
 
-.streak-message {
+.score-number {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-color);
+  margin: 6px 0 8px;
+  line-height: 1.1;
+}
+
+.score-number span {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.score-progress-track {
+  height: 8px;
+  width: 100%;
+  background: rgba(120, 120, 120, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 4px 0 8px;
+}
+
+.score-progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.score-subtext {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 8px;
-  line-height: 1.4;
-  margin-bottom: 0;
+  margin: 0;
 }

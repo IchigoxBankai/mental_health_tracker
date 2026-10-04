@@ -1,71 +1,143 @@
-.color-game {
+.color-game-wrapper {
   text-align: center;
-  padding: 30px 20px;
+  padding: 24px 20px;
+  max-width: 540px;
+  margin: 0 auto;
   color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.color-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+body.light .color-game-header {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.color-card {
   background: var(--card-bg);
   border: var(--card-border);
-  border-radius: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 100%;
   box-shadow: var(--card-shadow);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.color-word {
-  font-size: 56px;
-  font-weight: 800;
-  margin: 30px 0;
-  letter-spacing: -1px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
-  transition: all 0.3s ease;
-}
-
-.color-options {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
 
-.color-options button {
-  padding: 12px 22px;
-  border-radius: 12px;
+.color-prompt-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+body.light .color-prompt-box {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.color-target-word {
+  font-size: 54px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+  transition: transform 0.2s ease;
+}
+
+.color-instruction {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* 4 Distinct Color Buttons Grid */
+.color-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.color-choice-btn {
+  padding: 14px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  font-weight: 800;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.color-choice-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+.color-choice-btn.red {
+  background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+}
+
+.color-choice-btn.blue {
+  background: linear-gradient(135deg, #2e86de 0%, #54a0ff 100%);
+}
+
+.color-choice-btn.green {
+  background: linear-gradient(135deg, #10ac84 0%, #1dd1a1 100%);
+}
+
+.color-choice-btn.yellow {
+  background: linear-gradient(135deg, #ffa502 0%, #ffbe76 100%);
+  color: #1e1e2d;
+}
+
+.color-play-btn {
+  padding: 12px 30px;
+  border-radius: 30px;
   border: none;
+  cursor: pointer;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
   color: white;
   font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(165, 94, 234, 0.25);
+  font-size: 15px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(165, 94, 234, 0.3);
 }
 
-.color-options button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(165, 94, 234, 0.4);
-}
-
-.color-game p {
-  padding: 15px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--text-muted);
-}
-
-.result-box {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 16px;
-}
-
-.result-box.correct {
-  color: #2ecc71;
-  background: rgba(46, 204, 113, 0.1);
-}
-
-.result-box.incorrect {
-  color: #e74c3c;
-  background: rgba(231, 76, 60, 0.1);
+.color-play-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(165, 94, 234, 0.5);
 }

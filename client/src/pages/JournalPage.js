@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   collection,
   addDoc,
@@ -119,6 +120,7 @@ const JournalPage = () => {
   const [entries, setEntries] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedEntry, setSelectedEntry] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState("");
 
   /* ===== LIVE DATE WHILE WRITING ===== */
@@ -189,10 +191,15 @@ const JournalPage = () => {
 
   /* ================= DELETE ENTRY ================= */
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this entry?")) return;
-    await deleteDoc(doc(db, "journalEntries", id));
-    setSelectedEntry(null);
+  const confirmDelete = async () => {
+    if (!selectedEntry) return;
+    try {
+      await deleteDoc(doc(db, "journalEntries", selectedEntry.id));
+      setShowDeleteConfirm(false);
+      setSelectedEntry(null);
+    } catch (err) {
+      console.error("Error deleting entry:", err);
+    }
   };
 
   /* ================= SEARCH ================= */
@@ -310,58 +317,146 @@ const JournalPage = () => {
 
       {/* ===== MODAL ===== */}
 
-      {selectedEntry && (
-        <div className="modal-overlay" onClick={() => setSelectedEntry(null)}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <h3>
-              {moodMap[selectedEntry.mood]} {selectedEntry.title}
-            </h3>
+      {selectedEntry &&
+        createPortal(
+          <div className="modal-overlay" onClick={() => setSelectedEntry(null)}>
+            <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+              <h3>
+                {moodMap[selectedEntry.mood]} {selectedEntry.title}
+              </h3>
 
-            <p style={{ fontSize: 13, color: "gray" }}>
-              {formatDate(selectedEntry.createdAt)}
-            </p>
-
-            <p style={{ margin: "15px 0", whiteSpace: "pre-wrap" }}>
-              {selectedEntry.content}
-            </p>
-
-            {selectedEntry.sentiment && (
-              <p>
-                <strong>AI Sentiment:</strong> {selectedEntry.sentiment}
+              <p style={{ fontSize: 13, color: "gray" }}>
+                {formatDate(selectedEntry.createdAt)}
               </p>
-            )}
 
-            <button
-              style={{
-                background: "#b00020",
-                color: "white",
-                padding: 10,
-                borderRadius: 8,
-                border: "none",
-                marginBottom: 10,
-                cursor: "pointer",
-                width: "100%",
-              }}
-              onClick={() => handleDelete(selectedEntry.id)}
-            >
-              Delete Entry
-            </button>
+              <p style={{ margin: "15px 0", whiteSpace: "pre-wrap" }}>
+                {selectedEntry.content}
+              </p>
 
-            <button
+              {selectedEntry.sentiment && (
+                <p style={{ marginBottom: 15 }}>
+                  <strong>AI Sentiment:</strong> {selectedEntry.sentiment}
+                </p>
+              )}
+
+              <button
+                style={{
+                  background: "#b00020",
+                  color: "white",
+                  padding: 12,
+                  borderRadius: 10,
+                  border: "none",
+                  marginBottom: 10,
+                  cursor: "pointer",
+                  width: "100%",
+                  fontWeight: 600,
+                  fontSize: 14,
+                }}
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                Delete Entry
+              </button>
+
+              <button
+                style={{
+                  padding: 12,
+                  borderRadius: 10,
+                  border: "none",
+                  cursor: "pointer",
+                  width: "100%",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  background: "rgba(255, 255, 255, 0.1)",
+                  color: "inherit",
+                }}
+                onClick={() => {
+                  setSelectedEntry(null);
+                  setShowDeleteConfirm(false);
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {/* ===== CUSTOM ONSCREEN DELETE CONFIRMATION MODAL ===== */}
+      {showDeleteConfirm &&
+        createPortal(
+          <div
+            className="modal-overlay"
+            style={{ zIndex: 100000 }}
+            onClick={() => setShowDeleteConfirm(false)}
+          >
+            <div
+              className="modal-box"
               style={{
-                padding: 10,
-                borderRadius: 8,
-                border: "none",
-                cursor: "pointer",
-                width: "100%",
+                maxWidth: "380px",
+                padding: "32px 24px",
+                textAlign: "center",
               }}
-              onClick={() => setSelectedEntry(null)}
+              onClick={(e) => e.stopPropagation()}
             >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <div style={{ fontSize: "40px", marginBottom: "12px" }}>🗑️</div>
+              <h3 style={{ fontSize: "20px", marginBottom: "8px" }}>
+                Delete this entry?
+              </h3>
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: "var(--text-muted)",
+                  marginBottom: "24px",
+                }}
+              >
+                Do you want to delete this entry?
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  style={{
+                    flex: 1,
+                    background: "linear-gradient(135deg, #ff4d4d, #ff3333)",
+                    color: "white",
+                    padding: "12px 18px",
+                    borderRadius: "10px",
+                    border: "none",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 15px rgba(255, 77, 77, 0.3)",
+                    transition: "0.2s ease",
+                  }}
+                  onClick={confirmDelete}
+                >
+                  Yes, Delete
+                </button>
+                <button
+                  style={{
+                    flex: 1,
+                    background: "rgba(255, 255, 255, 0.1)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    color: "var(--text-color)",
+                    padding: "12px 18px",
+                    borderRadius: "10px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    transition: "0.2s ease",
+                  }}
+                  onClick={() => setShowDeleteConfirm(false)}
+                >
+                  No, Cancel
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

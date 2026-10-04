@@ -135,7 +135,7 @@ const MoodDetectionPage = () => {
       const detection = await faceapi
         .detectSingleFace(
           videoRef.current,
-          new faceapi.TinyFaceDetectorOptions({ inputSize: 416 }) // 🔥 improved accuracy
+          new faceapi.TinyFaceDetectorOptions({ inputSize: 128 }) // 🚀 Lower inputSize for 3x faster, lag-free execution
         )
         .withFaceExpressions();
 
@@ -153,7 +153,7 @@ const MoodDetectionPage = () => {
         stopCamera();
         saveMood(topEmotion, prob);
       }
-    }, 700);
+    }, 1200); // 🚀 Throttle interval to 1200ms to reduce CPU load
   };
 
   /* ===================== STOP CAMERA ===================== */

@@ -120,31 +120,62 @@ export default function AuraBotPage({ setActivePage }) {
         message: m.message,
       }));
 
-      // Resolve dynamic API endpoint for both local dev and production serverless deployment
-      const apiEndpoint = process.env.REACT_APP_API_URL
-        ? `${process.env.REACT_APP_API_URL}/api/chat`
-        : window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000/api/chat"
-        : "/api/chat";
+      // Resolve dynamic API endpoint: prefer localhost when developing locally, with fallback to remote
+      const isLocal =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
 
-      // Call Express / Serverless API endpoint
-      const response = await fetch(apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          mood: todayMood || "",
-          history: formattedHistory,
-          userContext: {
-            displayName: user.displayName || "User",
-          },
-        }),
-      });
+      const candidateEndpoints = [];
+      if (isLocal) {
+        candidateEndpoints.push("http://localhost:5000/api/chat");
+        if (process.env.REACT_APP_API_URL) {
+          candidateEndpoints.push(`${process.env.REACT_APP_API_URL}/api/chat`);
+        }
+      } else {
+        if (process.env.REACT_APP_API_URL) {
+          candidateEndpoints.push(`${process.env.REACT_APP_API_URL}/api/chat`);
+        }
+        candidateEndpoints.push("/api/chat");
+      }
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.statusText}`);
+      let response = null;
+      let lastError = null;
+
+      for (const endpoint of candidateEndpoints) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: userMessage,
+              mood: todayMood || "",
+              history: formattedHistory,
+              userContext: {
+                displayName: user.displayName || "User",
+              },
+            }),
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+
+          if (res.ok) {
+            response = res;
+            break;
+          }
+        } catch (fetchErr) {
+          lastError = fetchErr;
+          console.warn(`Endpoint ${endpoint} failed, checking next option...`, fetchErr);
+        }
+      }
+
+      if (!response) {
+        throw lastError || new Error("Failed to connect to AuraBot server");
       }
 
       const data = await response.json();

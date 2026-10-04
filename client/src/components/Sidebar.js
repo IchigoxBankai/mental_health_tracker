@@ -56,14 +56,15 @@ const Sidebar = ({ setActivePage, onLogoutClick }) => {
 
         <button
           onClick={toggleTheme}
-          style={{
-            background: "none",
-            border: "none",
-            color: "white",
-            cursor: "pointer",
-          }}
+          className="sidebar-theme-toggle"
+          title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          aria-label="Toggle Theme"
         >
-          {theme === "light" ? <Moon /> : <Sun />}
+          {theme === "light" ? (
+            <Moon size={20} color="#1e1e2d" />
+          ) : (
+            <Sun size={20} color="#fbbf24" />
+          )}
         </button>
       </div>
 

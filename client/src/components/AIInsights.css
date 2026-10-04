@@ -1,26 +1,74 @@
 .ai-insights-card {
-  margin-top: 25px;
-  padding: 24px;
+  background: var(--card-bg);
+  border: var(--card-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
-  color: white;
-  box-shadow: 0 10px 25px rgba(165, 94, 234, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.ai-insights-card h3 {
-  margin-bottom: 15px;
+.ai-insights-card:hover {
+  box-shadow: var(--card-glow), var(--card-shadow);
+}
+
+.ai-insights-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ai-insights-header h3 {
+  font-size: 17px;
   font-weight: 700;
-  color: white;
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.ai-insights-card ul {
-  padding-left: 20px;
+.ai-insights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.ai-insights-card li {
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.5;
+.ai-insight-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-color);
+  line-height: 1.4;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body.light .ai-insight-item {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ai-insight-item:hover {
+  transform: translateX(4px);
+  background: rgba(0, 210, 211, 0.08);
+  border-color: rgba(0, 210, 211, 0.25);
+}
+
+.ai-insights-empty {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: 12px 0;
+  margin: 0;
 }

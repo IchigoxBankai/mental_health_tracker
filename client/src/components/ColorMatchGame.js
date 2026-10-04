@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from "react";
 import "./ColorMatchGame.css";
 
-const colors = ["Red", "Blue", "Green", "Yellow"];
+const COLOR_MAP = [
+  { name: "Red", value: "#ff4757", classKey: "red" },
+  { name: "Blue", value: "#2e86de", classKey: "blue" },
+  { name: "Green", value: "#10ac84", classKey: "green" },
+  { name: "Yellow", value: "#ffa502", classKey: "yellow" },
+];
 
 function ColorMatchGame({ onScore }) {
-
   const [gameStarted, setGameStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
   const [score, setScore] = useState(0);
-  const [word, setWord] = useState("");
-  const [color, setColor] = useState("");
+  const [targetWord, setTargetWord] = useState("Red");
+  const [textColorObj, setTextColorObj] = useState(COLOR_MAP[0]);
   const [gameOver, setGameOver] = useState(false);
+  const [highScore, setHighScore] = useState(
+    Number(localStorage.getItem("colorMatchHighScore")) || 0
+  );
 
   /* ---------- TIMER ---------- */
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           setGameOver(true);
-          clearInterval(timer);
           return 0;
         }
         return prev - 1;
@@ -30,86 +36,113 @@ function ColorMatchGame({ onScore }) {
     return () => clearInterval(timer);
   }, [gameStarted, gameOver]);
 
-  /* ---------- NEW QUESTION ---------- */
+  /* ---------- HIGH SCORE ---------- */
+  useEffect(() => {
+    if (gameOver && score > highScore) {
+      setHighScore(score);
+      localStorage.setItem("colorMatchHighScore", score);
+    }
+  }, [gameOver, score, highScore]);
+
+  /* ---------- NEW ROUND ---------- */
   const generateRound = () => {
-    const randomWord =
-      colors[Math.floor(Math.random() * colors.length)];
+    const randomWordObj =
+      COLOR_MAP[Math.floor(Math.random() * COLOR_MAP.length)];
+    const randomColorObj =
+      COLOR_MAP[Math.floor(Math.random() * COLOR_MAP.length)];
 
-    const randomColor =
-      colors[Math.floor(Math.random() * colors.length)];
-
-    setWord(randomWord);
-    setColor(randomColor.toLowerCase());
+    setTargetWord(randomWordObj.name);
+    setTextColorObj(randomColorObj);
   };
 
-  useEffect(() => {
-    if (gameStarted) generateRound();
-  }, [gameStarted]);
+  const handleStart = () => {
+    setScore(0);
+    setTimeLeft(30);
+    setGameOver(false);
+    setGameStarted(true);
+    generateRound();
+  };
 
   /* ---------- ANSWER ---------- */
-  const handleAnswer = (selected) => {
-    if (gameOver) return;
+  const handleAnswer = (selectedColorName) => {
+    if (gameOver || !gameStarted) return;
 
-    if (selected === color) {
-      setScore(prev => prev + 1);
+    if (selectedColorName.toLowerCase() === textColorObj.name.toLowerCase()) {
+      setScore((prev) => prev + 1);
       onScore && onScore(2);
+    } else {
+      setScore((prev) => Math.max(0, prev - 1));
     }
 
     generateRound();
   };
 
-  const restartGame = () => {
-    setScore(0);
-    setTimeLeft(30);
-    setGameOver(false);
-    setGameStarted(false);
-  };
-
   return (
-    <div className="color-game">
+    <div className="color-game-wrapper">
+      <div className="color-game-header">
+        <div>⏳ Time: {timeLeft}s</div>
+        <div>🏆 Score: {score}</div>
+        <div>👑 Record: {highScore}</div>
+      </div>
 
+      {/* START SCREEN */}
       {!gameStarted && (
-        <button onClick={() => setGameStarted(true)}>
-          Start Color Match
-        </button>
+        <div className="color-card">
+          <div style={{ fontSize: "40px" }}>🎨</div>
+          <h3 style={{ fontSize: "22px", fontWeight: 800, margin: "4px 0" }}>
+            Color Reflex Challenge
+          </h3>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px", margin: "4px 0 16px" }}>
+            Train your brain with the Stroop effect! Select the <strong>font color</strong> of the text, not what the word says!
+          </p>
+          <button className="color-play-btn" onClick={handleStart}>
+            ▶ Start Challenge
+          </button>
+        </div>
       )}
 
+      {/* ACTIVE PLAY SCREEN */}
       {gameStarted && !gameOver && (
-        <>
-          <h3>Time: {timeLeft}s</h3>
-
-          <div
-            className="color-word"
-            style={{ color: color }}
-          >
-            {word}
+        <div className="color-card">
+          <div className="color-prompt-box">
+            <span className="color-instruction">Select the Font Color:</span>
+            <div
+              className="color-target-word"
+              style={{ color: textColorObj.value }}
+            >
+              {targetWord}
+            </div>
           </div>
 
-          <p>Select TEXT COLOR</p>
-
-          <div className="color-options">
-            {colors.map(c => (
+          <div className="color-options-grid">
+            {COLOR_MAP.map((c) => (
               <button
-                key={c}
-                onClick={() =>
-                  handleAnswer(c.toLowerCase())
-                }
+                key={c.name}
+                className={`color-choice-btn ${c.classKey}`}
+                onClick={() => handleAnswer(c.name)}
               >
-                {c}
+                ● {c.name}
               </button>
             ))}
           </div>
-
-          <h4>Score: {score}</h4>
-        </>
+        </div>
       )}
 
+      {/* GAME OVER SCREEN */}
       {gameOver && (
-        <div className="result-box">
-          <h3>Game Over</h3>
-          <p>Score: {score}</p>
-          <button onClick={restartGame}>
-            Play Again
+        <div className="color-card">
+          <div style={{ fontSize: "42px" }}>🎉</div>
+          <h3 style={{ fontSize: "22px", fontWeight: 800, margin: "4px 0" }}>
+            Time's Up!
+          </h3>
+          <p style={{ fontSize: "16px", margin: "4px 0" }}>
+            Final Score: <strong>{score}</strong>
+          </p>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px", margin: "0 0 12px" }}>
+            👑 Personal Record: {highScore}
+          </p>
+          <button className="color-play-btn" onClick={handleStart}>
+            🔄 Play Again
           </button>
         </div>
       )}

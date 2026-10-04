@@ -6,12 +6,13 @@ import TimerGame from "../components/TimerGame";
 import MusicPlayer from "../components/MusicPlayer";
 import ColorMatchGame from "../components/ColorMatchGame";
 import ReactionGame from "../components/ReactionGame";
+
 const quotes = [
   "You are stronger than you think.",
   "Take a deep breath. You’ve got this.",
   "Small steps every day lead to big changes.",
   "Your mental health matters.",
-  "Progress, not perfection."
+  "Progress, not perfection.",
 ];
 
 const tracks = [
@@ -23,7 +24,15 @@ const tracks = [
   { name: "OnRyo Rider", file: "/music/onryo rider.mp3" },
   { name: "MoonLight", file: "/music/moonlight.mp3" },
   { name: "S&S", file: "/music/sadness and sorrow.mp3" },
-  { name: "Silhouette", file: "/music/Silhouette.mp3" }
+  { name: "Silhouette", file: "/music/Silhouette.mp3" },
+];
+
+const GAMES = [
+  { id: "bubble", label: "Bubble Pop", icon: "🫧" },
+  { id: "memory", label: "Memory Matrix", icon: "🧠" },
+  { id: "color", label: "Color Match", icon: "🎨" },
+  { id: "reaction", label: "Reaction Test", icon: "⚡" },
+  { id: "timer", label: "Focus Timer", icon: "⏱️" },
 ];
 
 function RelaxPage() {
@@ -56,10 +65,8 @@ function RelaxPage() {
     if (isRunning) return;
 
     setIsRunning(true);
-
     const phases = ["Inhale", "Hold", "Exhale"];
     let index = 0;
-
     setPhase(phases[index]);
 
     const interval = setInterval(() => {
@@ -80,7 +87,6 @@ function RelaxPage() {
   // -------------------------
   const increaseScore = (points = 1) => {
     setTotalScore((prev) => prev + points);
-
     const newStreak = streak + 1;
     setStreak(newStreak);
     localStorage.setItem("relaxStreak", newStreak);
@@ -88,111 +94,99 @@ function RelaxPage() {
 
   return (
     <div className="relax-page">
-      <h2 className="main-title">🌿 Relax & Recharge</h2>
+      {/* HEADER WITH SCORE BAR */}
+      <div className="relax-header">
+        <div className="relax-title-wrap">
+          <h2>🌿 Relax & Recharge</h2>
+          <p>Unwind your mind with guided breathing, ambient soundscapes, and relaxing games.</p>
+        </div>
 
-      {/* Score Bar */}
-      <div className="score-bar">
-        <div>🏆 Relax Score: {totalScore}</div>
-        <br></br>
-        <div>🔥 Streak: {streak} days</div>
+        <div className="score-bar">
+          <div className="score-badge highlight">
+            🏆 Relax Score: <strong>{totalScore}</strong>
+          </div>
+          <div className="score-badge">
+            🔥 Streak: <strong>{streak} Days</strong>
+          </div>
+        </div>
       </div>
-<br></br>
-      {/* Quote */}
+
+      {/* MINDFULNESS QUOTE */}
       <div className="quote-box">
         <p>"{quote}"</p>
       </div>
 
-      <div className="top-row">
-
-        {/* Breathing Card */}
-        <div className="card">
+      {/* TOP 2 FEATURE CARDS */}
+      <div className="relax-top-grid">
+        {/* Guided Breathing */}
+        <div className="relax-card">
           <h3>🧘 Guided Breathing</h3>
-
           <div className={`breathing-ring ${isRunning ? "active" : ""}`}>
             <span>{phase}</span>
           </div>
-
-          <button onClick={startBreathing}>
-            {isRunning ? "Session Running..." : "Start Session"}
+          <button className="relax-btn" onClick={startBreathing}>
+            {isRunning ? "Session Running..." : "Start 4-4-4 Session"}
           </button>
         </div>
 
-        {/* Music Card */}
-        <div className="card">
-          <h3>🎵 Relaxing Music</h3>
-
-         <select
-  className="music-select"
-  value={selectedTrack}
-  onChange={(e) => setSelectedTrack(e.target.value)}
->
-  <option value="" disabled>
-    🎵 Select a Song
-  </option>
-
-  {tracks.map((track, index) => (
-    <option key={index} value={track.file}>
-      {track.name}
-    </option>
-  ))}
-</select>
-
-         <MusicPlayer track={selectedTrack} />
+        {/* Relaxing Music */}
+        <div className="relax-card">
+          <h3>🎵 Relaxing Music & Ambience</h3>
+          <select
+            className="music-select"
+            value={selectedTrack}
+            onChange={(e) => setSelectedTrack(e.target.value)}
+          >
+            <option value="" disabled>
+              🎵 Choose a soundscape...
+            </option>
+            {tracks.map((track, index) => (
+              <option key={index} value={track.file}>
+                {track.name}
+              </option>
+            ))}
+          </select>
+          <MusicPlayer track={selectedTrack} />
         </div>
       </div>
 
-      {/* Games Section */}
+      {/* GAMES SECTION */}
       <div className="games-section">
-        <h3>🎮 Relax Games</h3>
+        <div className="games-header">
+          <h3>🎮 Mindful Mini-Games</h3>
 
-        <div className="game-tabs">
-          <button
-            className={activeGame === "bubble" ? "active-tab" : ""}
-            onClick={() => setActiveGame("bubble")}
-          >
-            Bubble
-          </button>
-
-          <button
-            className={activeGame === "memory" ? "active-tab" : ""}
-            onClick={() => setActiveGame("memory")}
-          >
-            Memory
-          </button>
-
-          <button
-            className={activeGame === "color" ? "active-tab" : ""}
-            onClick={() => setActiveGame("color")}
-          >
-            Color
-          </button>
-<button onClick={() => setActiveGame("reaction")}>Reaction</button>
-          <button
-            className={activeGame === "timer" ? "active-tab" : ""}
-            onClick={() => setActiveGame("timer")}
-          >
-            Timer
-          </button>
+          {/* GAME TAB SELECTORS */}
+          <div className="game-tabs">
+            {GAMES.map((g) => (
+              <button
+                key={g.id}
+                className={`game-tab-btn ${activeGame === g.id ? "active" : ""}`}
+                onClick={() => setActiveGame(g.id)}
+              >
+                <span>{g.icon}</span>
+                <span>{g.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="game-display">
-          <div key={activeGame} className="game-wrapper">
-            {activeGame === "bubble" && (
-              <BubbleGame onScore={increaseScore} />
-            )}
-            {activeGame === "memory" && (
-              <MemoryGame onScore={increaseScore} />
-            )}
-            {activeGame === "color" && (
-              <ColorMatchGame onScore={increaseScore} />
-            )}
-            {activeGame === "reaction" && (
-  <ReactionGame onScore={increaseScore} />
-)}
-            {activeGame === "timer" && (
-              <TimerGame onScore={increaseScore} />
-            )}
-          </div>
+        {/* UNIFIED GAME ARENA */}
+        <div className="game-arena">
+          {activeGame === "bubble" && (
+            <BubbleGame onScore={increaseScore} />
+          )}
+          {activeGame === "memory" && (
+            <MemoryGame onScore={increaseScore} />
+          )}
+          {activeGame === "color" && (
+            <ColorMatchGame onScore={increaseScore} />
+          )}
+          {activeGame === "reaction" && (
+            <ReactionGame onScore={increaseScore} />
+          )}
+          {activeGame === "timer" && (
+            <TimerGame onScore={increaseScore} />
+          )}
         </div>
       </div>
     </div>

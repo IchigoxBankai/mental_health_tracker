@@ -1,0 +1,55 @@
+.daily-quote-card {
+  background: var(--card-bg);
+  border: var(--card-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.daily-quote-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-glow), var(--card-shadow);
+}
+
+.daily-quote-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.daily-quote-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.daily-quote-text {
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+.daily-quote-tag {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+  margin-top: 4px;
+}

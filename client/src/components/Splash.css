@@ -1,72 +1,272 @@
-/* ===== CONTAINER ===== */
+/* ===== SPLASH SCREEN CONTAINER ===== */
 .splash-container {
+  position: fixed;
+  inset: 0;
   width: 100vw;
   height: 100vh;
-  background: #28123c;
+  background: radial-gradient(ellipse at 50% 45%, #210a3d 0%, #130626 55%, #080212 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   overflow: hidden;
+  z-index: 9999;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ===== FLOATING SPHERES ===== */
-.splash-sphere {
+/* Subtle Vignette & Film Grain Overlay */
+.splash-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== AMBIENT AURORA GLOWS ===== */
+.splash-aurora {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #d6b0ff, #9f54ff);
-  opacity: 0.65;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.45;
+  mix-blend-mode: screen;
 }
 
-/* ===== CONTENT ===== */
+.splash-aurora.violet {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #8b25e2 0%, rgba(139, 37, 226, 0) 70%);
+}
+
+.splash-aurora.cyan {
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, #06b6d4 0%, rgba(6, 182, 212, 0) 70%);
+  opacity: 0.28;
+}
+
+.splash-aurora.magenta {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, #ec4899 0%, rgba(236, 72, 153, 0) 70%);
+  opacity: 0.22;
+}
+
+/* ===== STARLIGHT PARTICLES ===== */
+.splash-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(192, 132, 252, 0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
 .splash-content {
   position: relative;
-  z-index: 20;
-  text-align: center;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
 }
 
-/* ===== LOGO ===== */
-.splash-logo {
-  width: 140px;
-  height: auto;
+/* ===== AURA HERO BADGE CONTAINER ===== */
+.aura-hero-wrapper {
   position: relative;
-  z-index: 2;
-  margin-bottom: 10px;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
 }
 
-/* ===== ROTATING RING ===== */
-.logo-ring {
+/* Outer Breathing Halo Glow */
+.aura-halo-bloom {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  top: -38px;
-  border: 3.5px solid rgba(179, 23, 226, 0.45);
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
-  box-shadow: 0 0 18px rgba(90, 2, 107, 0.4);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(56, 189, 248, 0.2) 45%, transparent 70%);
+  filter: blur(28px);
   pointer-events: none;
-  filter: drop-shadow(0 0 12px rgba(182, 79, 230, 0.6));
+  z-index: 1;
 }
 
-/* ===== APP TITLE ===== */
-.splash-title {
-  margin-top: 40px;
-  margin-bottom: 12px; /* space before slogan */
-  font-size: 42px;
-  font-weight: 700;
-  letter-spacing: 2px;
+/* Concentric Expanding Ripple Rings */
+.aura-ripple {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(192, 132, 252, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
 
-  /* Gradient text */
-  background: linear-gradient(90deg, #dab4e9, #b5d2ec);
+.aura-ripple.secondary {
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+/* Rotating Orbital Gradient Ring */
+.aura-orbital-ring {
+  position: absolute;
+  width: 196px;
+  height: 196px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(216, 180, 254, 0.35);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.aura-orbit-satellite {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #38bdf8, 0 0 20px #a855f7;
+}
+
+/* Frosted Glass Badge */
+.aura-glass-disc {
+  position: relative;
+  z-index: 5;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.45),
+    0 0 35px rgba(168, 85, 247, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 15px rgba(168, 85, 247, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Inner Disc Shimmer Flare */
+.aura-glass-disc::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-25deg);
+  animation: discShimmer 4s infinite ease-in-out;
+}
+
+@keyframes discShimmer {
+  0% { left: -75%; opacity: 0; }
+  25% { opacity: 0.6; }
+  50% { left: 125%; opacity: 0; }
+  100% { left: 125%; opacity: 0; }
+}
+
+/* The Brain Logo Inside Disc */
+.splash-logo-image {
+  width: 88px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(192, 132, 252, 0.7));
+  position: relative;
+  z-index: 6;
+}
+
+/* ===== APP TITLE (SHIMMER GRADIENT) ===== */
+.splash-title {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  background: linear-gradient(120deg, #ffffff 0%, #e9d5ff 25%, #67e8f9 50%, #d8b4fe 75%, #ffffff 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: titleShine 4s linear infinite;
+  filter: drop-shadow(0 4px 18px rgba(168, 85, 247, 0.45));
+  line-height: 1.15;
+}
+
+@keyframes titleShine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 /* ===== TAGLINE ===== */
 .splash-tagline {
-  font-size: 16px;
-  letter-spacing: 0.6px;
-  color: rgba(237, 232, 238, 0.85);
+  margin: 10px 0 0 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3.5px;
+  color: rgba(226, 217, 243, 0.78);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* ===== MINDFUL BREATHE CUE ===== */
+.splash-mindful-cue {
+  margin-top: 26px;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  color: #a5f3fc;
+  opacity: 0.9;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+}
+
+.splash-cue-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.6); opacity: 1; }
+}
+
+/* ===== SLEEK PROGRESS TRACK ===== */
+.splash-progress-track {
+  margin-top: 18px;
+  width: 170px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.splash-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 50%, #c084fc 100%);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 18px rgba(168, 85, 247, 0.7);
 }

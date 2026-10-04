@@ -1,72 +1,159 @@
-.music-player {
-  background: rgba(40, 0, 70, 0.6);
-  backdrop-filter: blur(18px);
+/* AUDIO WRAPPER CARD */
+.audio-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 320px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
   border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+  margin-top: 20px;
+  box-sizing: border-box;
 }
 
-/* CONTROLS */
-.controls {
+body.light .audio-wrapper {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+/* ROW 1: Controls & Visualizer */
+.player-controls-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 /* PLAY BUTTON */
 .play-btn {
-  background: #a855f7;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent, #a855f7) 0%, var(--accent-glow, #c084fc) 100%);
   border: none;
   color: white;
-  font-size: 18px;
-  padding: 10px 14px;
-  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+  padding: 0;
+  margin: 0;
 }
 
 .play-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
 }
 
-/* PROGRESS */
+.play-btn:active {
+  transform: scale(0.95);
+}
+
+/* ROW 2: Progress timeline with times */
+.timeline-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--text-muted, #94a3b8);
+  min-width: 32px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+body.light .time {
+  color: #64748b;
+}
+
 .progress-bar {
   flex: 1;
-  accent-color: #c084fc;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--accent, #a855f7);
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s;
 }
 
-/* VOLUME */
+body.light .progress-bar {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* ROW 3: Volume Controller */
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 180px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.volume-icon {
+  font-size: 16px;
+  color: var(--text-muted, #94a3b8);
+  opacity: 0.8;
+}
+
 .volume-slider {
-  width: 90px;
-  accent-color: #9333ea;
+  flex: 1;
+  height: 4px;
+  accent-color: var(--accent, #a855f7);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+body.light .volume-slider {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* ================= VISUALIZER ================= */
-
 .visualizer {
   display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 15px;
+  align-items: flex-end;
+  gap: 4px;
+  height: 32px;
 }
 
 .visualizer span {
-  width: 5px;
-  height: 10px;
-  background: #d8b4fe;
+  width: 3px;
+  height: 6px;
+  background: var(--accent, #a855f7);
   border-radius: 3px;
+  opacity: 0.6;
+  transition: height 0.2s ease;
 }
 
 .visualizer.active span {
   animation: bounce 0.8s infinite ease-in-out;
+  opacity: 1;
 }
 
-.visualizer span:nth-child(2){animation-delay:.1s;}
-.visualizer span:nth-child(3){animation-delay:.2s;}
-.visualizer span:nth-child(4){animation-delay:.3s;}
-.visualizer span:nth-child(5){animation-delay:.4s;}
+.visualizer span:nth-child(2) { animation-delay: 0.15s; }
+.visualizer span:nth-child(3) { animation-delay: 0.3s; }
+.visualizer span:nth-child(4) { animation-delay: 0.45s; }
+.visualizer span:nth-child(5) { animation-delay: 0.6s; }
 
 @keyframes bounce {
-  0%,100% { height:10px; }
-  50% { height:30px; }
+  0%, 100% { height: 6px; }
+  50% { height: 26px; }
 }

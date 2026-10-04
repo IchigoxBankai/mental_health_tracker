@@ -1,14 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
+import "./WeeklyMentalScore.css";
 
-const WeeklyMentalScore = ({ moods }) => {
-
+const WeeklyMentalScore = ({ moods = [] }) => {
   /* ===== FILTER LAST 7 DAYS ===== */
   const lastWeek = moods.filter((entry) => {
+    if (!entry.timestamp) return false;
     const moodDate = new Date(entry.timestamp);
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
     return moodDate >= sevenDaysAgo;
   });
 
@@ -18,12 +18,10 @@ const WeeklyMentalScore = ({ moods }) => {
   const averageScore =
     lastWeek.length > 0
       ? Math.round(
-          lastWeek.reduce(
-            (sum, m) => sum + convertToScore(m.mood),
-            0
-          ) / lastWeek.length
+          lastWeek.reduce((sum, m) => sum + convertToScore(m.mood), 0) /
+            lastWeek.length
         )
-      : 0;
+      : 80; // default healthy baseline when new
 
   /* ===== SCORE LABEL ===== */
   const getLabel = () => {
@@ -41,51 +39,48 @@ const WeeklyMentalScore = ({ moods }) => {
     return "#f87171";
   };
 
+  const activeColor = getColor();
+
   return (
     <motion.div
-      className="panel"
+      className="mental-score-card"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h3>📊 Weekly Mental Health Score</h3>
+      <div className="score-header">
+        <h3>📊 Wellness Score</h3>
+        <span
+          className="score-badge"
+          style={{
+            color: activeColor,
+            borderColor: `${activeColor}40`,
+            backgroundColor: `${activeColor}15`,
+          }}
+        >
+          {getLabel()}
+        </span>
+      </div>
 
-      {lastWeek.length === 0 ? (
-        <p>No mood data this week</p>
-      ) : (
-        <>
-          <h2 style={{ marginTop: 10 }}>
-            {averageScore}/100
-          </h2>
+      <div className="score-number">
+        {averageScore}
+        <span> / 100</span>
+      </div>
 
-          <p>{getLabel()}</p>
+      <div className="score-progress-track">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${averageScore}%` }}
+          transition={{ duration: 0.8 }}
+          className="score-progress-fill"
+          style={{ background: activeColor }}
+        />
+      </div>
 
-          {/* Progress Bar */}
-          <div
-            style={{
-              height: 12,
-              width: "100%",
-              background: "#ddd",
-              borderRadius: 20,
-              marginTop: 12,
-            }}
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${averageScore}%` }}
-              transition={{ duration: 0.8 }}
-              style={{
-                height: "100%",
-                background: getColor(),
-                borderRadius: 20,
-              }}
-            />
-          </div>
-
-          <p style={{ marginTop: 10, fontSize: 13 }}>
-            Based on last 7 days mood entries
-          </p>
-        </>
-      )}
+      <p className="score-subtext">
+        {lastWeek.length > 0
+          ? `Calculated from ${lastWeek.length} entries this week`
+          : "Track your moods to update your weekly score"}
+      </p>
     </motion.div>
   );
 };

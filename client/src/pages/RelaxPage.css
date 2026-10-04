@@ -1,138 +1,140 @@
 /* ===== RELAX PAGE ===== */
-
 .relax-page {
-  min-height: 100vh;
-  padding: 40px 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 0 40px;
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.relax-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-/* ===============================
-   MUSIC DROPDOWN - PREMIUM
-================================= */
-.music-select {
-  background: var(--input-bg);
-  color: var(--text-color);
-  border: var(--input-border);
-  padding: 14px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 320px;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  font-size: 15px;
-}
-
-.music-select:focus {
-  border-color: var(--accent);
-}
-
-.music-select option {
-  background: var(--bg-color);
-  color: var(--text-color);
-}
-
-/* ===============================
-   AUDIO PLAYER GLASS STYLE
-================================= */
-.audio-wrapper {
-  background: var(--card-bg);
-  border: var(--card-border);
-  padding: 16px;
-  border-radius: 40px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: var(--card-shadow);
-  margin-top: 15px;
-}
-
-.audio-player {
-  width: 100%;
-}
-
-/* Title */
-.main-title {
-  font-size: 36px;
+.relax-title-wrap h2 {
+  font-size: 30px;
   font-weight: 800;
-  margin-bottom: 15px;
-  letter-spacing: -0.5px;
+  margin: 0 0 6px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Quote */
-.quote-box {
-  width: 100%;
-  max-width: 700px;
+.relax-title-wrap p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Score Stats Bar */
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-badge {
   background: var(--card-bg);
   border: var(--card-border);
-  padding: 20px 30px;
-  border-radius: 16px;
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--text-color);
   box-shadow: var(--card-shadow);
-  line-height: 1.6;
-}
-
-/* Top Cards Layout */
-.top-row {
-  width: 100%;
-  max-width: 1000px;
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-bottom: 50px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Individual Card */
-.card {
-  width: 360px;
-  min-height: 300px;
+.score-badge.highlight {
+  color: #ff9f43;
+  border-color: rgba(255, 159, 67, 0.3);
+}
+
+/* Quote Card */
+.quote-box {
+  background: var(--card-bg);
+  border: var(--card-border);
+  backdrop-filter: blur(12px);
+  padding: 16px 24px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-color);
+  box-shadow: var(--card-shadow);
+  line-height: 1.5;
+}
+
+/* Top Feature Cards (Breathing & Music) - Side by Side (Left & Right) */
+.relax-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .relax-top-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.relax-card {
+  width: 100%;
   background: var(--card-bg);
   border: var(--card-border);
   backdrop-filter: blur(14px);
-  padding: 40px 30px;
+  -webkit-backdrop-filter: blur(14px);
+  padding: 30px;
   border-radius: 24px;
   box-shadow: var(--card-shadow);
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  justify-content: space-between;
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-height: 300px;
 }
 
-.card:hover {
-  transform: translateY(-6px);
+.relax-card:hover {
+  transform: translateY(-4px);
   box-shadow: var(--card-glow), var(--card-shadow);
 }
 
-.card h3 {
-  margin-bottom: 20px;
+.relax-card h3 {
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-color);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Breathing Circle */
+/* Breathing Ring */
 .breathing-ring {
-  width: 160px;
-  height: 160px;
-  margin: 25px auto;
+  width: 140px;
+  height: 140px;
+  margin: 10px auto 16px;
   border-radius: 50%;
   border: 4px dashed var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--text-color);
   transition: all 0.3s ease;
 }
@@ -148,8 +150,8 @@
     border-color: var(--accent);
   }
   50% {
-    transform: scale(1.2);
-    box-shadow: 0 0 35px rgba(165, 94, 234, 0.4);
+    transform: scale(1.18);
+    box-shadow: 0 0 30px rgba(165, 94, 234, 0.4);
     border-color: var(--accent-glow);
   }
   100% {
@@ -159,114 +161,126 @@
   }
 }
 
-/* Buttons */
-.relax-page button {
-  padding: 12px 26px;
+.relax-btn {
+  padding: 10px 24px;
   border: none;
-  border-radius: 30px;
+  border-radius: 20px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
   color: white;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(165, 94, 234, 0.25);
+  box-shadow: 0 4px 14px rgba(165, 94, 234, 0.3);
+}
+
+.relax-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(165, 94, 234, 0.5);
+}
+
+/* Music Select */
+.music-select {
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: var(--input-border);
+  padding: 12px 16px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 320px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
   font-family: inherit;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
-.relax-page button:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 20px rgba(165, 94, 234, 0.4);
+.music-select option {
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
-/* Game Card */
-.game-card {
-  width: 100%;
-  max-width: 900px;
-  background: var(--card-bg);
-  border: var(--card-border);
-  backdrop-filter: blur(14px);
-  padding: 50px 40px;
-  border-radius: 24px;
-  box-shadow: var(--card-shadow);
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.game-card h3 {
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-
-.game-card p {
-  margin-bottom: 25px;
-  color: var(--text-muted);
-}
-
-.game-btn {
-  background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%) !important;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3) !important;
-}
-
-.game-btn:hover {
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5) !important;
-}
-
-/* Games Section */
+/* ===============================
+   GAMES SECTION & ARENA
+================================= */
 .games-section {
-  width: 100%;
-  max-width: 1000px;
   background: var(--card-bg);
   border: var(--card-border);
-  backdrop-filter: blur(14px);
-  padding: 40px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 30px;
   border-radius: 24px;
-  margin-top: 40px;
   box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+.games-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.games-header h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Game Navigation Segmented Tabs */
 .game-tabs {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.game-tabs button {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+body.light .game-tabs {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.game-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.game-tab-btn:hover {
   color: var(--text-color);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-body.light .game-tabs button {
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+.game-tab-btn.active {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
+  color: white !important;
+  box-shadow: 0 4px 14px rgba(165, 94, 234, 0.35);
 }
 
-.game-tabs button:hover {
-  background: var(--accent);
-  color: white;
-  border-color: transparent;
-}
-
-.game-display {
-  position: relative;
+/* Game Arena Canvas */
+.game-arena {
+  width: 100%;
+  border-radius: 20px;
   overflow: hidden;
-  min-height: 250px;
-}
-
-.game-wrapper {
-  animation: fadeSlide 0.4s ease-in-out;
-}
-
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  position: relative;
+  min-height: 420px;
 }

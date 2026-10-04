@@ -1,75 +1,157 @@
 /* ===============================
-   MAIN WRAPPER (Glass Premium UI)
+   BUBBLE GAME ARENA
 ================================= */
 .bubble-wrapper {
   width: 100%;
   min-height: 420px;
-  background: var(--card-bg);
-  border: var(--card-border);
-  backdrop-filter: blur(18px);
-  border-radius: 24px;
-  padding: 25px;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--card-shadow);
   color: var(--text-color);
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===============================
-   HEADER
+   HEADER STATS BAR
 ================================= */
-.game-header {
+.bubble-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: 700;
-  margin-bottom: 20px;
-  font-size: 16px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  font-size: 15px;
   color: var(--text-color);
+}
+
+body.light .bubble-header {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.bubble-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* ===============================
-   DIFFICULTY BUTTONS
+   START & END SCREENS
 ================================= */
-.difficulty-select {
+.bubble-center-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: var(--card-bg);
+  border: var(--card-border);
+  padding: 35px 30px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  width: 360px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: popIn 0.3s ease;
+}
+
+.bubble-center-card h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.bubble-center-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Difficulty Selector inside Start Card */
+.difficulty-selector {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 25px;
+  gap: 8px;
+  margin: 6px 0;
 }
 
-.difficulty-select button {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background: rgba(165, 94, 234, 0.15);
-  border: 1px solid rgba(165, 94, 234, 0.2);
+.diff-btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-color);
   font-weight: 600;
-  transition: all 0.25s ease;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.difficulty-select button:hover {
-  transform: translateY(-2px);
+body.light .diff-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.diff-btn:hover {
+  background: rgba(165, 94, 234, 0.2);
+  border-color: var(--accent);
+}
+
+.diff-btn.active {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(165, 94, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(165, 94, 234, 0.35);
+}
+
+.bubble-play-btn {
+  padding: 12px 30px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(165, 94, 234, 0.4);
+  width: 100%;
+}
+
+.bubble-play-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(165, 94, 234, 0.6);
 }
 
 /* ===============================
-   GAME AREA
+   GAME CANVAS & BUBBLES
 ================================= */
 .bubble-container {
   position: relative;
-  height: 280px;
+  height: 320px;
+  width: 100%;
   overflow: hidden;
   z-index: 1;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
 }
 
-/* ===============================
-   BUBBLES
-================================= */
+body.light .bubble-container {
+  background: rgba(0, 0, 0, 0.02);
+}
+
 .bubble {
   position: absolute;
   bottom: -60px;
@@ -78,113 +160,51 @@
   animation-name: floatUp;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(255, 255, 255, 0.1);
+  box-shadow: inset -4px -4px 12px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: transform 0.15s ease;
 }
 
 .bubble:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
-/* Bubble Types */
 .bubble.normal {
-  background: radial-gradient(circle at 30% 30%, rgba(0, 210, 211, 0.7), rgba(0, 168, 204, 0.4));
-  box-shadow: 0 0 15px rgba(0, 210, 211, 0.4);
+  background: radial-gradient(circle at 30% 30%, rgba(0, 210, 211, 0.8), rgba(0, 168, 204, 0.45));
+  box-shadow: 0 0 15px rgba(0, 210, 211, 0.5);
 }
 
 .bubble.gold {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.8), rgba(255, 179, 0, 0.4));
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.9), rgba(255, 179, 0, 0.5));
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
 }
 
 .bubble.red {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 118, 117, 0.8), rgba(214, 48, 49, 0.4));
-  box-shadow: 0 0 15px rgba(255, 118, 117, 0.4);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 118, 117, 0.9), rgba(214, 48, 49, 0.5));
+  box-shadow: 0 0 18px rgba(255, 118, 117, 0.5);
 }
 
 .bubble.black {
-  background: radial-gradient(circle at 30% 30%, rgba(45, 52, 54, 0.8), rgba(0, 0, 0, 0.6));
+  background: radial-gradient(circle at 30% 30%, rgba(45, 52, 54, 0.9), rgba(0, 0, 0, 0.7));
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
-/* Float animation */
 @keyframes floatUp {
   from { bottom: -60px; }
   to { bottom: 110%; }
 }
 
-/* ===============================
-   POP ANIMATION
-================================= */
-.bubble.pop {
-  animation: popEffect 0.3s ease forwards;
-}
-
-@keyframes popEffect {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* ===============================
-   FLOATING SCORE (+1 animation)
-================================= */
 .floating-score {
   position: absolute;
   font-weight: 800;
   font-size: 18px;
-  animation: floatScore 1s ease forwards;
+  animation: floatScore 0.8s ease forwards;
   pointer-events: none;
+  color: #ff9f43;
 }
 
 @keyframes floatScore {
   from { opacity: 1; transform: translateY(0) scale(1); }
-  to { opacity: 0; transform: translateY(-50px) scale(1.3); }
-}
-
-/* ===============================
-   START & END SCREENS
-================================= */
-.start-screen,
-.end-screen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background: var(--card-bg);
-  border: var(--card-border);
-  padding: 30px 40px;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-}
-
-.start-screen h2,
-.end-screen h2 {
-  font-size: 24px;
-  font-weight: 800;
-  margin-bottom: 12px;
-}
-
-.start-screen button,
-.end-screen button {
-  margin-top: 15px;
-  padding: 10px 24px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
-  color: white;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(165, 94, 234, 0.3);
-}
-
-.start-screen button:hover,
-.end-screen button:hover {
-  transform: scale(1.05) translateY(-1px);
-  box-shadow: 0 6px 18px rgba(165, 94, 234, 0.5);
+  to { opacity: 0; transform: translateY(-40px) scale(1.3); }
 }

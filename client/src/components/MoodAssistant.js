@@ -8,6 +8,7 @@ import {
   limit,
   onSnapshot,
 } from "firebase/firestore";
+import "./MoodAssistant.css";
 
 /* ================= AI RESPONSE LOGIC ================= */
 
@@ -47,7 +48,6 @@ const MoodAssistant = () => {
   const [latestMood, setLatestMood] = useState(null);
 
   /* ================= REAL-TIME LISTENER ================= */
-
   useEffect(() => {
     const user = auth.currentUser;
     if (!user) return;
@@ -70,14 +70,10 @@ const MoodAssistant = () => {
   }, []);
 
   /* ================= GENERATE AI MESSAGE ================= */
-
   const generateAIMessage = (mood, replace = false) => {
     if (!mood) return;
 
-    const responses = adviceMap[mood] || [
-      "I'm here to support you 🤝",
-    ];
-
+    const responses = adviceMap[mood] || ["I'm here to support you 🤝"];
     const randomAdvice =
       responses[Math.floor(Math.random() * responses.length)];
 
@@ -100,73 +96,50 @@ const MoodAssistant = () => {
   };
 
   /* ================= USER ASK BUTTON ================= */
-
   const askSupport = () => {
     if (!latestMood) return;
     generateAIMessage(latestMood);
   };
 
-  /* ================= UI ================= */
-
   return (
     <motion.div
+      className="mood-assistant-card"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      style={{
-        marginTop: 30,
-        padding: 20,
-        borderRadius: 18,
-        background: "rgba(146, 196, 240, 0.95)",
-        backdropFilter: "blur(12px)",
-      }}
     >
-      <h3>🤖 Aura Assistant</h3>
-
-      {messages.length === 0 && (
-        <p className="muted">
-          Log a mood to receive personalized support
-        </p>
-      )}
-
-      {/* CHAT MESSAGES */}
-      <div style={{ marginTop: 15 }}>
-        {messages.map((msg, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              padding: 12,
-              marginBottom: 10,
-              borderRadius: 12,
-              background:
-                msg.type === "ai"
-                  ? "rgba(107, 139, 197, 0.91)"
-                  : "#6366f1",
-              color: "white",
-            }}
-          >
-            {msg.text}
-          </motion.div>
-        ))}
+      <div className="assistant-header">
+        <h3>
+          <span className="assistant-status-dot"></span>
+          🤖 Aura AI Assistant
+        </h3>
       </div>
 
-      {/* SUPPORT BUTTON */}
+      <div className="assistant-chat-body">
+        {messages.length === 0 ? (
+          <p className="assistant-empty">
+            Log a mood to receive personalized wellness guidance from Aura.
+          </p>
+        ) : (
+          messages.map((msg, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`assistant-bubble ${msg.type}`}
+            >
+              {msg.text}
+            </motion.div>
+          ))
+        )}
+      </div>
+
       {latestMood && (
         <button
           onClick={askSupport}
           type="button"
-          style={{
-            marginTop: 10,
-            padding: "10px 18px",
-            borderRadius: 999,
-            border: "none",
-            background: "white",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
+          className="assistant-action-btn"
         >
-          Give me support advice 💬
+          <span>Ask Aura for advice</span> 💬
         </button>
       )}
     </motion.div>

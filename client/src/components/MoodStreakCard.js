@@ -10,7 +10,6 @@ const MoodStreakCard = () => {
   const [user, setUser] = useState(null);
 
   /* ===== AUTH LISTENER ===== */
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -22,7 +21,6 @@ const MoodStreakCard = () => {
   }, []);
 
   /* ===== Calculate Streak ===== */
-
   useEffect(() => {
     if (!user) return;
 
@@ -61,13 +59,11 @@ const MoodStreakCard = () => {
         setStreak(currentStreak);
 
         /* ===== Assign Badge ===== */
-
         if (currentStreak >= 30) setBadge("👑 Aura Master");
         else if (currentStreak >= 14) setBadge("🌟 Dedicated");
         else if (currentStreak >= 7) setBadge("💪 Consistent");
         else if (currentStreak >= 3) setBadge("🌱 Getting Started");
         else setBadge("✨ Keep Going!");
-
       } catch (error) {
         console.error("Error calculating streak:", error);
       }
@@ -78,14 +74,17 @@ const MoodStreakCard = () => {
 
   return (
     <div className="streak-card">
-      <h3>🔥 Mood Streak</h3>
+      <div className="streak-header">
+        <h3>🔥 Mood Streak</h3>
+        <span className="streak-badge">{badge}</span>
+      </div>
 
-      <div className="streak-number">{streak} Days</div>
-
-      <div className="streak-badge">{badge}</div>
+      <div className="streak-number">
+        {streak} {streak === 1 ? "Day" : "Days"}
+      </div>
 
       <p className="streak-message">
-        Consistency builds emotional awareness. Keep tracking your mood daily!
+        Consistency builds emotional awareness.
       </p>
     </div>
   );

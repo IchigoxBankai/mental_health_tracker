@@ -210,33 +210,74 @@ const DashboardPage = () => {
               </button>
             </div>
 
-            {/* TODAY MOOD */}
-            <div className="dashboard-cards">
-              <div className="panel">
-                <h3>Today's Mood</h3>
-                <strong>
+            {/* TOP 4 STATS ROW */}
+            <div className="dashboard-stats-grid">
+              {/* 1. TODAY'S MOOD */}
+              <div className="dashboard-stat-card">
+                <div className="dashboard-stat-header">
+                  <h3>✨ Today's Mood</h3>
+                  <span className="dashboard-stat-badge">
+                    {latestMoodObj ? "Logged" : "Pending"}
+                  </span>
+                </div>
+
+                <div className="dashboard-stat-value">
+                  {latestMoodObj ? (
+                    <span>{moodLabel(latestMoodObj.mood)}</span>
+                  ) : (
+                    <span style={{ fontSize: "18px", color: "var(--text-muted)", fontWeight: 500 }}>
+                      No entry yet
+                    </span>
+                  )}
+                </div>
+
+                <p className="dashboard-stat-sub">
                   {latestMoodObj
-                    ? moodLabel(latestMoodObj.mood)
-                    : "No entry today"}
-                </strong>
+                    ? "Keep tracking daily for better insights"
+                    : "Log your feelings today"}
+                </p>
+
+                {!latestMoodObj && (
+                  <button
+                    className="dashboard-stat-action"
+                    onClick={() => setActivePage("mood")}
+                  >
+                    + Log Mood
+                  </button>
+                )}
               </div>
+
+              {/* 2. MOOD STREAK */}
+              <MoodStreakCard moods={moods} />
+
+              {/* 3. WEEKLY WELLNESS SCORE */}
+              <WeeklyMentalScore moods={moods} />
+
+              {/* 4. DAILY MOTIVATION */}
+              <DailyQuote latestMood={latestMoodText} />
             </div>
 
-            <DailyQuote latestMood={latestMoodText} />
+            {/* MAIN 2-COLUMN DASHBOARD GRID */}
+            <div className="dashboard-main-grid">
+              {/* LEFT / MAIN ANALYTICS COLUMN */}
+              <div className="dashboard-col-main">
+                <MoodChart
+                  moods={moods}
+                  onAddMood={() => setActivePage("mood")}
+                />
 
-            <MoodChart
-              moods={moods}
-              onViewDetails={() => setActivePage("journal")}
-              onAddMood={() => setActivePage("mood")}
-            />
+                <MoodCalendar moods={moods} />
+              </div>
 
-            <WeeklyMentalScore moods={moods} />
-            <MoodAssistant />
-            <SmartMoodAlerts moods={moods} />
-            <AIInsights moods={moods} />
-            <MoodStreakCard moods={moods} />
-            
-            <MoodCalendar moods={moods} />
+              {/* RIGHT / AI & SELF-CARE SIDEBAR COLUMN */}
+              <div className="dashboard-col-side">
+                <MoodAssistant />
+
+                <SmartMoodAlerts moods={moods} />
+
+                <AIInsights moods={moods} />
+              </div>
+            </div>
           </motion.div>
         );
 

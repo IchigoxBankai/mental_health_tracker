@@ -12,37 +12,53 @@ if (!apiKey) {
 
 const ai = new GoogleGenAI({ apiKey });
 
-// Retry helper
-async function generateWithRetry(prompt, systemPrompt, retries = 3) {
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-        config: {
-          systemInstruction: systemPrompt,
-        },
-      });
+const CANDIDATE_MODELS = [
+  process.env.GEMINI_MODEL,
+  "gemini-3.5-flash",
+  "gemini-3.8-flash",
+  "gemini-flash-latest",
+].filter(Boolean);
 
-      return response.text?.trim() || "";
-    } catch (error) {
-      console.error(`Gemini Attempt ${attempt} Failed:`, error);
+// Retry helper with fallback models
+async function generateWithRetry(prompt, systemPrompt, retriesPerModel = 2) {
+  let lastError = null;
 
-      const isTemporary =
-        error?.status === 503 ||
-        error?.status === 429 ||
-        error?.message?.includes("UNAVAILABLE") ||
-        error?.message?.includes("RESOURCE_EXHAUSTED");
+  for (const model of CANDIDATE_MODELS) {
+    for (let attempt = 1; attempt <= retriesPerModel; attempt++) {
+      try {
+        const response = await ai.models.generateContent({
+          model: model,
+          contents: prompt,
+          config: {
+            systemInstruction: systemPrompt,
+          },
+        });
 
-      if (isTemporary && attempt < retries) {
-        console.log(`Retrying in ${attempt * 2000}ms...`);
-        await new Promise((resolve) => setTimeout(resolve, attempt * 2000));
-        continue;
+        const text = response.text?.trim();
+        if (text) {
+          return text;
+        }
+      } catch (error) {
+        lastError = error;
+        console.warn(`Gemini (${model}, attempt ${attempt}) error:`, error?.status || error?.message);
+
+        const isTemporary =
+          error?.status === 503 ||
+          error?.status === 429 ||
+          error?.message?.includes("UNAVAILABLE") ||
+          error?.message?.includes("RESOURCE_EXHAUSTED");
+
+        if (isTemporary && attempt < retriesPerModel) {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          continue;
+        }
+        // If not temporary (e.g. 404 / unsupported) or retries exhausted, fall back to next model
+        break;
       }
-
-      throw error;
     }
   }
+
+  throw lastError;
 }
 
 export async function generateReply(

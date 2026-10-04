@@ -14,7 +14,6 @@ const AIInsights = ({ moods = [] }) => {
 
   useEffect(() => {
     if (!moods.length) return;
-
     generateInsights(moods);
   }, [moods]);
 
@@ -40,7 +39,14 @@ const AIInsights = ({ moods = [] }) => {
 
     entries.forEach((entry) => {
       if (entry.mood >= 5 && entry.timestamp) {
-        const day = entry.timestamp.toLocaleDateString("en-US", {
+        const dateObj =
+          entry.timestamp instanceof Date
+            ? entry.timestamp
+            : entry.timestamp.toDate
+            ? entry.timestamp.toDate()
+            : new Date(entry.timestamp);
+
+        const day = dateObj.toLocaleDateString("en-US", {
           weekday: "long",
         });
 
@@ -57,16 +63,25 @@ const AIInsights = ({ moods = [] }) => {
     }
 
     /* ===== STREAK ===== */
-    const sorted = [...entries].sort(
-      (a, b) => a.timestamp - b.timestamp
-    );
+    const validEntries = entries
+      .filter((e) => e.timestamp)
+      .map((e) => ({
+        ...e,
+        date:
+          e.timestamp instanceof Date
+            ? e.timestamp
+            : e.timestamp.toDate
+            ? e.timestamp.toDate()
+            : new Date(e.timestamp),
+      }))
+      .sort((a, b) => a.date - b.date);
 
     let streak = 1;
     let maxStreak = 1;
 
-    for (let i = 1; i < sorted.length; i++) {
+    for (let i = 1; i < validEntries.length; i++) {
       const diff =
-        (sorted[i].timestamp - sorted[i - 1].timestamp) /
+        (validEntries[i].date - validEntries[i - 1].date) /
         (1000 * 60 * 60 * 24);
 
       if (diff <= 1.5) {
@@ -82,8 +97,7 @@ const AIInsights = ({ moods = [] }) => {
     }
 
     /* ===== NEGATIVE WARNING ===== */
-    const recent = sorted.slice(-3);
-
+    const recent = validEntries.slice(-3);
     const negativeCount = recent.filter((e) => e.mood <= 2).length;
 
     if (negativeCount >= 3) {
@@ -97,14 +111,20 @@ const AIInsights = ({ moods = [] }) => {
 
   return (
     <div className="ai-insights-card">
-      <h3>🧠 AuraTrack AI Insights</h3>
+      <div className="ai-insights-header">
+        <h3>🧠 Emotional Patterns</h3>
+      </div>
 
       {insights.length === 0 ? (
-        <p>No insights yet. Add more mood entries!</p>
+        <p className="ai-insights-empty">
+          No patterns detected yet. Log more mood entries to unlock AI insights!
+        </p>
       ) : (
-        <ul>
+        <ul className="ai-insights-list">
           {insights.map((insight, index) => (
-            <li key={index}>{insight}</li>
+            <li key={index} className="ai-insight-item">
+              <span>{insight}</span>
+            </li>
           ))}
         </ul>
       )}

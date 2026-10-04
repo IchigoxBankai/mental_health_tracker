@@ -13,29 +13,29 @@ const moodMap = {
 /* ================= BASE SUGGESTIONS ================= */
 const suggestionMap = {
   Happy: [
-    "🙏 Write gratitude journal",
-    "📸 Capture this happy moment",
-    "💬 Share positivity with someone",
+    "🙏 Write a gratitude journal note",
+    "📸 Capture this happy moment in memory",
+    "💬 Share positivity with a friend or loved one",
   ],
   Relaxed: [
-    "📖 Read a book",
-    "🌅 Enjoy nature",
-    "🧠 Reflect on your peaceful moments",
+    "📖 Enjoy a chapter of an inspiring book",
+    "🌅 Take in the present moment calmly",
+    "🧠 Reflect on what brought you peace today",
   ],
   Neutral: [
-    "🎵 Listen to your favourite music",
-    "🚶 Take a short mindful walk",
-    "📘 Light journaling may help clarity",
+    "🎵 Tune into your favorite uplifting playlist",
+    "🚶 Take a short 10-minute mindful walk",
+    "📘 Quick journaling to clarify your thoughts",
   ],
   Sad: [
-    "📝 Try journaling your feelings",
-    "📞 Talk to someone you trust",
-    "🎧 Listen to calming music",
+    "📝 Write down your thoughts to release tension",
+    "📞 Reach out to someone you trust",
+    "🎧 Put on gentle, comforting music",
   ],
   Angry: [
-    "🏃 Try physical exercise",
-    "🎨 Do a creative activity",
-    "🌬 Practice deep breathing",
+    "🏃 Release physical energy with a workout",
+    "🎨 Channel focus into a creative outlet",
+    "🌬 Practice 4-7-8 deep relaxation breathing",
   ],
 };
 
@@ -58,51 +58,35 @@ const SelfCareSuggestions = ({ moods = [] }) => {
 
     /* ===== Calculate Trend ===== */
     const moodValues = recentMoods.map((m) => m.mood);
-
     const avg =
       moodValues.reduce((sum, m) => sum + m, 0) / moodValues.length;
 
     let detectedTrend = "Stable";
-
     if (latestMoodValue > avg) detectedTrend = "Improving";
     else if (latestMoodValue < avg) detectedTrend = "Declining";
 
     setTrend(detectedTrend);
 
     /* ===== Negative Streak Detection ===== */
-    const negativeCount = recentMoods.filter(
-      (m) => m.mood <= 2
-    ).length;
-
+    const negativeCount = recentMoods.filter((m) => m.mood <= 2).length;
     let finalSuggestions = [...(suggestionMap[latestMoodLabel] || [])];
 
     /* ===== Add Smart Adaptive Suggestions ===== */
-
-    // Emotional Risk
     if (negativeCount >= 3) {
       finalSuggestions.unshift(
-        "⚠️ You've had several low moods recently. Consider rest or talking to someone supportive."
+        "⚠️ You've had low moods recently. Consider extra rest or gentle relaxation."
       );
-    }
-
-    // Mood Improving
-    if (detectedTrend === "Improving") {
+    } else if (detectedTrend === "Improving") {
       finalSuggestions.push(
-        "📈 Your mood is improving — keep following positive habits!"
+        "📈 Your mood is improving — keep following your positive habits!"
       );
-    }
-
-    // Mood Declining
-    if (detectedTrend === "Declining") {
+    } else if (detectedTrend === "Declining") {
       finalSuggestions.push(
-        "🌿 Your mood seems slightly lower lately. Consider relaxation or mindfulness."
+        "🌿 Your mood seems slightly lower lately. Take a short mindful pause."
       );
-    }
-
-    // Stable Mood
-    if (detectedTrend === "Stable") {
+    } else {
       finalSuggestions.push(
-        "⚖️ Your mood seems stable. Maintain healthy routines."
+        "⚖️ Your mood is balanced. Maintain your healthy daily rhythm."
       );
     }
 
@@ -111,23 +95,24 @@ const SelfCareSuggestions = ({ moods = [] }) => {
 
   return (
     <div className="suggestion-card">
-      <h3>💡 Smart Self-Care Suggestions</h3>
+      <div className="suggestion-header">
+        <h3>💡 Smart Self-Care</h3>
+        {trend && (
+          <span className="suggestion-trend-badge">{trend}</span>
+        )}
+      </div>
 
       {currentMood && (
         <p className="suggestion-subtitle">
-          Based on your recent mood:
-          <strong> {currentMood}</strong>
-          {trend && (
-            <span style={{ marginLeft: "10px" }}>
-              ({trend})
-            </span>
-          )}
+          Based on recent mood: <strong>{currentMood}</strong>
         </p>
       )}
 
-      <ul>
+      <ul className="suggestion-list">
         {suggestions.map((s, index) => (
-          <li key={index}>{s}</li>
+          <li key={index} className="suggestion-item">
+            {s}
+          </li>
         ))}
       </ul>
     </div>

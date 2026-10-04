@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import "./TimerGame.css";
 
-const TimerGame = () => {
-  const [selectedTime, setSelectedTime] = useState(null);
+const TimerGame = ({ onScore }) => {
+  const [selectedTime, setSelectedTime] = useState(10);
   const [gameStarted, setGameStarted] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [result, setResult] = useState("");
+  const [isWin, setIsWin] = useState(false);
 
   // Start Game
   const startGame = () => {
     if (!selectedTime) {
-      alert("Please select a time first!");
+      alert("Please select a target time first!");
       return;
     }
 
@@ -22,17 +24,19 @@ const TimerGame = () => {
   const stopGame = () => {
     const endTime = Date.now();
     const elapsedSeconds = (endTime - startTime) / 1000;
-
     const difference = Math.abs(elapsedSeconds - selectedTime);
 
-    // Allow 1 second margin
+    // Allow 1 second margin for win
     if (difference <= 1) {
+      setIsWin(true);
       setResult(
-        `✅ You Win! You clicked at ${elapsedSeconds.toFixed(2)} seconds`
+        `🎉 Perfect! You stopped at ${elapsedSeconds.toFixed(2)}s (Target: ${selectedTime}s)`
       );
+      onScore && onScore(5);
     } else {
+      setIsWin(false);
       setResult(
-        `❌ You Lost! You clicked at ${elapsedSeconds.toFixed(2)} seconds`
+        `❌ You missed! You stopped at ${elapsedSeconds.toFixed(2)}s (Target: ${selectedTime}s)`
       );
     }
 
@@ -42,50 +46,34 @@ const TimerGame = () => {
   // Reset Game
   const resetGame = () => {
     setGameStarted(false);
-    setSelectedTime(null);
     setResult("");
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "30px" }}>
-      <h2>⏱ Timer Challenge Game</h2>
+    <div className="timer-container">
+      <h3>⏱️ Focus Timer Challenge</h3>
+      <p>Test your internal clock. Click Stop as close to the target time as possible!</p>
 
       {/* TIME OPTIONS */}
-      {!gameStarted && (
+      {!gameStarted && !result && (
         <>
-          <h3>Select Time</h3>
-
-          <div style={{ marginBottom: "20px" }}>
-            {[10, 20, 30, 60].map((time) => (
+          <div className="timer-time-options">
+            {[5, 10, 15, 30].map((time) => (
               <button
                 key={time}
                 onClick={() => setSelectedTime(time)}
-                style={{
-                  margin: "10px",
-                  padding: "10px 20px",
-                  background:
-                    selectedTime === time ? "#4CAF50" : "#4f5bcace",
-                  border: "none",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                }}
+                className={`timer-option-btn ${selectedTime === time ? "selected" : ""}`}
               >
-                {time === 60 ? "1 Min" : `${time} Sec`}
+                {time} Seconds
               </button>
             ))}
           </div>
 
           <button
             onClick={startGame}
-            style={{
-              padding: "12px 25px",
-              background: "#1b5381",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="timer-action-btn start"
           >
-            Start Game
+            ▶ Start Focus Test
           </button>
         </>
       )}
@@ -93,30 +81,28 @@ const TimerGame = () => {
       {/* GAME AREA */}
       {gameStarted && (
         <>
-          <h3>Wait... and click STOP exactly at {selectedTime}s</h3>
+          <div className="focus-circle active">
+            <span>⏱️ ...</span>
+          </div>
 
-          <button
-            onClick={stopGame}
-            style={{
-              padding: "15px 30px",
-              background: "red",
-              color: "white",
-              border: "none",
-              fontSize: "18px",
-              cursor: "pointer",
-            }}
-          >
-            STOP
+          <p style={{ fontWeight: 600, fontSize: "16px", color: "var(--text-color)" }}>
+            Count in your head and click STOP at <strong>{selectedTime}s</strong>!
+          </p>
+
+          <button onClick={stopGame} className="timer-action-btn stop">
+            🛑 STOP NOW
           </button>
         </>
       )}
 
       {/* RESULT */}
       {result && (
-        <>
-          <h3 style={{ marginTop: "20px" }}>{result}</h3>
-          <button onClick={resetGame}>Play Again</button>
-        </>
+        <div className={`timer-result-box ${isWin ? "win" : "lose"}`}>
+          <p style={{ margin: 0, fontWeight: 700 }}>{result}</p>
+          <button onClick={resetGame} className="timer-action-btn reset">
+            🔄 Try Again
+          </button>
+        </div>
       )}
     </div>
   );

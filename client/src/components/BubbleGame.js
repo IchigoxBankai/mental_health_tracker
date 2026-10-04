@@ -19,19 +19,18 @@ function BubbleGame({ onScore }) {
   const popSound = useRef(new Audio(popSoundFile));
 
   const difficultySettings = {
-    easy: 1200,
-    medium: 700,
-    hard: 400
+    easy: 1100,
+    medium: 650,
+    hard: 380,
   };
 
   const animationSpeed = {
-    easy: "5s",
-    medium: "3s",
-    hard: "2s"
+    easy: "4.5s",
+    medium: "2.8s",
+    hard: "1.8s",
   };
 
   /* ================= TIMER ================= */
-
   useEffect(() => {
     if (!gameStarted || !gameActive) return;
 
@@ -49,40 +48,36 @@ function BubbleGame({ onScore }) {
   }, [gameStarted, gameActive]);
 
   /* ================= BUBBLE GENERATOR ================= */
-
   useEffect(() => {
     if (!gameStarted || !gameActive) return;
 
     const interval = setInterval(() => {
-      const size = Math.random() * 40 + 40;
+      const size = Math.random() * 35 + 45;
       const rand = Math.random();
 
       let type = "normal";
-      if (rand < 0.08) type = "gold";
-      else if (rand < 0.18) type = "red";
-      else if (rand < 0.23) type = "black";
+      if (rand < 0.1) type = "gold";
+      else if (rand < 0.22) type = "red";
+      else if (rand < 0.28) type = "black";
 
       const newBubble = {
         id: Date.now() + Math.random(),
-        left: Math.random() * 85,
+        left: Math.random() * 82 + 5,
         size,
-        type
+        type,
       };
 
       setBubbles((prev) => [...prev, newBubble]);
 
       setTimeout(() => {
-        setBubbles((prev) =>
-          prev.filter((b) => b.id !== newBubble.id)
-        );
-      }, 6000);
+        setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
+      }, 5500);
     }, difficultySettings[difficulty]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => clearInterval(interval);
   }, [difficulty, gameStarted, gameActive]);
 
   /* ================= SAVE HIGH SCORE ================= */
-
   useEffect(() => {
     if (!gameActive && gameStarted) {
       if (score > highScore) {
@@ -93,57 +88,52 @@ function BubbleGame({ onScore }) {
   }, [gameActive, gameStarted, score, highScore]);
 
   /* ================= POP ================= */
-
   const popBubble = (bubble) => {
     if (!gameActive || !gameStarted) return;
 
     try {
       popSound.current.currentTime = 0;
       popSound.current.play().catch(() => {});
-    } catch (err) {}
-
-    setBubbles((prev) => prev.filter((b) => b.id !== bubble.id));
-
-    // 💀 Black bubble = instant game over
-    if (bubble.type === "black") {
-      setGameActive(false);
-      return;
-    }
-
-    let points = 1;
-    if (bubble.type === "gold") points = 5;
-    if (bubble.type === "red") points = -1;
+    } catch {}
 
     const now = Date.now();
-    if (lastPopTime.current && now - lastPopTime.current < 700) {
-      points += 2;
-      setCombo((prev) => prev + 1);
+    let currentCombo = combo;
+
+    if (lastPopTime.current && now - lastPopTime.current < 1200) {
+      currentCombo += 1;
     } else {
-      setCombo(1);
+      currentCombo = 1;
     }
 
     lastPopTime.current = now;
+    setCombo(currentCombo);
 
-    setScore((prev) => Math.max(0, prev + points));
-    if (onScore) onScore(points);
+    let points = 1;
+    if (bubble.type === "gold") points = 5;
+    if (bubble.type === "red") points = -2;
+    if (bubble.type === "black") points = 0;
+
+    const totalPoints = points * (currentCombo > 2 ? 2 : 1);
+
+    setScore((prev) => Math.max(0, prev + totalPoints));
+    onScore && onScore(totalPoints);
+
+    setBubbles((prev) => prev.filter((b) => b.id !== bubble.id));
 
     const float = {
       id: Date.now() + Math.random(),
       left: bubble.left,
-      value: points
+      value: totalPoints,
     };
 
     setFloatingScores((prev) => [...prev, float]);
 
     setTimeout(() => {
-      setFloatingScores((prev) =>
-        prev.filter((f) => f.id !== float.id)
-      );
-    }, 1000);
+      setFloatingScores((prev) => prev.filter((f) => f.id !== float.id));
+    }, 800);
   };
 
   /* ================= START GAME ================= */
-
   const startGame = () => {
     setScore(0);
     setTimeLeft(60);
@@ -155,7 +145,6 @@ function BubbleGame({ onScore }) {
   };
 
   /* ================= RESTART ================= */
-
   const restartGame = () => {
     setGameStarted(false);
     setGameActive(false);
@@ -163,36 +152,61 @@ function BubbleGame({ onScore }) {
 
   return (
     <div className="bubble-wrapper">
-
-      <div className="game-header">
-        <div>⏳ {timeLeft}s</div>
-        <div>🏆 Score: {score}</div>
-        <div>🔥 Combo: {combo}</div>
+      {/* STATS BAR */}
+      <div className="bubble-header">
+        <div className="bubble-stat-pill">⏳ {timeLeft}s</div>
+        <div className="bubble-stat-pill">🏆 Score: {score}</div>
+        <div className="bubble-stat-pill">🔥 Combo: x{combo}</div>
+        <div className="bubble-stat-pill">👑 Best: {highScore}</div>
       </div>
 
-      <div className="difficulty-select">
-        <button disabled={gameStarted} onClick={() => setDifficulty("easy")}>Easy</button>
-        <button disabled={gameStarted} onClick={() => setDifficulty("medium")}>Medium</button>
-        <button disabled={gameStarted} onClick={() => setDifficulty("hard")}>Hard</button>
-      </div>
-
+      {/* START SCREEN */}
       {!gameStarted && (
-        <div className="start-screen">
-          <h3>Bubble Challenge</h3>
-          <p>Select Difficulty & Start</p>
-          <button onClick={startGame}>Start Game</button>
+        <div className="bubble-center-card">
+          <h3>🫧 Bubble Pop Challenge</h3>
+          <p>Pop glowing bubbles to relieve stress and earn calm score points!</p>
+
+          <div className="difficulty-selector">
+            <button
+              className={`diff-btn ${difficulty === "easy" ? "active" : ""}`}
+              onClick={() => setDifficulty("easy")}
+            >
+              🟢 Easy
+            </button>
+            <button
+              className={`diff-btn ${difficulty === "medium" ? "active" : ""}`}
+              onClick={() => setDifficulty("medium")}
+            >
+              🟡 Medium
+            </button>
+            <button
+              className={`diff-btn ${difficulty === "hard" ? "active" : ""}`}
+              onClick={() => setDifficulty("hard")}
+            >
+              🔴 Hard
+            </button>
+          </div>
+
+          <button className="bubble-play-btn" onClick={startGame}>
+            ▶ Start Game
+          </button>
         </div>
       )}
 
+      {/* END SCREEN */}
       {gameStarted && !gameActive && (
-        <div className="end-screen">
-          <h3>Game Over!</h3>
-          <p>Your Score: {score}</p>
-          <p>🏆 Record: {highScore}</p>
-          <button onClick={restartGame}>Play Again</button>
+        <div className="bubble-center-card">
+          <h3>🎉 Game Finished!</h3>
+          <p>You scored <strong>{score} points</strong> this round.</p>
+          <p>👑 Personal Record: <strong>{highScore}</strong></p>
+
+          <button className="bubble-play-btn" onClick={restartGame}>
+            🔄 Play Again
+          </button>
         </div>
       )}
 
+      {/* ACTIVE PLAY CANVAS */}
       <div className="bubble-container">
         {bubbles.map((bubble) => (
           <div
@@ -202,7 +216,7 @@ function BubbleGame({ onScore }) {
               left: `${bubble.left}%`,
               width: bubble.size,
               height: bubble.size,
-              animationDuration: animationSpeed[difficulty]
+              animationDuration: animationSpeed[difficulty],
             }}
             onClick={() => popBubble(bubble)}
           />

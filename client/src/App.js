@@ -14,16 +14,12 @@ import ReminderListener from "./components/ReminderListener";
 function App() {
   const [showSplash, setShowSplash] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 7500);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+  };
 
   if (showSplash) {
-    return <SplashScreen />;
+    return <SplashScreen onFinish={handleSplashFinish} />;
   }
 
   return (
